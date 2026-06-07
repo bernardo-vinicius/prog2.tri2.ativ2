@@ -168,6 +168,59 @@ Campos:
 
 ---
 
+Para realizar as operações de CRUD, o projeto utiliza consultas SQL preparadas através do método `db.query()`.
+
+As consultas são definidas uma única vez no início do arquivo e reutilizadas ao longo da aplicação.
+
+### Inserção de Itens
+
+```ts
+const insertItem = db.query("INSERT INTO items (title) VALUES(?)");
+
+Responsável por inserir um novo item na tabela.
+
+Utilizada no método:
+
+Item.create(...)
+Busca de um Item por ID
+const selectItem = db.query("SELECT * FROM items WHERE id = ? LIMIT 1");
+
+Responsável por buscar um único item a partir de seu identificador.
+
+A cláusula LIMIT 1 garante que apenas um registro seja retornado.
+
+Utilizada no método:
+
+Item.load(...)
+Busca de Todos os Itens
+const selectAllItems = db.query("SELECT * FROM items");
+
+Responsável por retornar todos os registros da tabela.
+
+Utilizada no método:
+
+ToDoList.loadAll()
+Atualização de Título
+const updateTitleItem = db.query(
+  "UPDATE items SET title = ? WHERE id = ?"
+);
+
+Responsável por alterar o título de um item existente.
+
+Utilizada no setter:
+
+item.title = "Novo título";
+Remoção de Itens
+const removeItem = db.query(
+  "DELETE FROM items WHERE id = ?"
+);
+
+Responsável por remover um item da tabela utilizando seu identificador.
+
+Utilizada no método:
+
+ToDoList.remove(...)
+
 # Sistema de Cache
 
 A classe `Item` possui um cache baseado em `Map`.

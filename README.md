@@ -308,7 +308,19 @@ true
 
 ## Pré-requisitos
 
-- Bun instalado
+- Bun instalado na máquina
+- Caso não esteja, rodar um dos seguintes comandos no terminal:
+### Windows
+
+```bash
+powershell -c "irm bun.sh/install.ps1 | iex"
+```
+
+### Linux / macOS
+
+```bash
+curl -fsSL https://bun.sh/install | bash
+```
 
 Verifique a instalação:
 

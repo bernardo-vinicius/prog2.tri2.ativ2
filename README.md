@@ -166,60 +166,113 @@ Campos:
 | id    | INTEGER | Identificador único |
 | title | TEXT    | Título do item      |
 
----
+# Consultas SQL (Queries)
 
-Para realizar as operações de CRUD, o projeto utiliza consultas SQL preparadas através do método `db.query()`.
+O projeto utiliza consultas SQL preparadas para realizar as operações de CRUD no banco de dados SQLite.
 
-As consultas são definidas uma única vez no início do arquivo e reutilizadas ao longo da aplicação.
-
-### Inserção de Itens
+### Inserção de itens
 
 ```ts
-const insertItem = db.query("INSERT INTO items (title) VALUES(?)");
+const insertItem = db.query(
+  "INSERT INTO items (title) VALUES(?)"
+);
+```
 
-Responsável por inserir um novo item na tabela.
+Insere um novo registro na tabela `items`.
 
-Utilizada no método:
+---
 
-Item.create(...)
-Busca de um Item por ID
-const selectItem = db.query("SELECT * FROM items WHERE id = ? LIMIT 1");
+### Busca de um item pelo ID
 
-Responsável por buscar um único item a partir de seu identificador.
+```ts
+const selectItem = db.query(
+  "SELECT * FROM items WHERE id = ? LIMIT 1"
+);
+```
 
-A cláusula LIMIT 1 garante que apenas um registro seja retornado.
+Retorna um único item com base no ID informado.
 
-Utilizada no método:
+A cláusula `LIMIT 1` garante que apenas um registro seja retornado.
 
-Item.load(...)
-Busca de Todos os Itens
-const selectAllItems = db.query("SELECT * FROM items");
+---
 
-Responsável por retornar todos os registros da tabela.
+### Busca de todos os itens
 
-Utilizada no método:
+```ts
+const selectAllItems = db.query(
+  "SELECT * FROM items"
+);
+```
 
+Retorna todos os registros da tabela `items`.
+
+Utilizada pelo método:
+
+```ts
 ToDoList.loadAll()
-Atualização de Título
+```
+
+---
+
+### Atualização do título de um item
+
+```ts
 const updateTitleItem = db.query(
   "UPDATE items SET title = ? WHERE id = ?"
 );
+```
 
-Responsável por alterar o título de um item existente.
+Atualiza o campo `title` de um registro específico.
 
-Utilizada no setter:
+Utilizada pelo setter:
 
+```ts
 item.title = "Novo título";
-Remoção de Itens
+```
+
+---
+
+### Remoção de um item
+
+```ts
 const removeItem = db.query(
   "DELETE FROM items WHERE id = ?"
 );
+```
 
-Responsável por remover um item da tabela utilizando seu identificador.
+Remove um registro da tabela utilizando seu ID.
 
-Utilizada no método:
+Utilizada pelo método:
 
-ToDoList.remove(...)
+```ts
+ToDoList.remove(id)
+```
+
+---
+
+### Limpeza da tabela para testes
+
+```ts
+db.run("DELETE FROM items");
+```
+
+Remove todos os registros da tabela.
+
+É utilizada apenas durante os testes para garantir um ambiente limpo a cada execução.
+
+---
+
+### Reinicialização do contador de IDs
+
+```ts
+db.run("DELETE FROM sqlite_sequence WHERE name='items'");
+```
+
+Reinicia o contador do `AUTOINCREMENT`.
+
+Dessa forma, os IDs dos testes sempre começam em `1`, facilitando a visualização e validação dos resultados.
+
+---
 
 # Sistema de Cache
 
